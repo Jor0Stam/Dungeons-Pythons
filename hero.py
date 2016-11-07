@@ -13,7 +13,7 @@ class Hero:
         self.weapon = 0
         self.spell = 0
         self.attack = 0
-        # self.alive = True
+        self.alive = True
 
     def __eq__(self, other):
         return self.name == other.name and self.title == other.title and self.health == other.health and self.mana == self.mana and self.mana_regeneration_rate == other.mana_regeneration_rate
@@ -42,14 +42,19 @@ class Hero:
         else:
             return "Your hero is dead"
 
-    def can_cast(self):
+    def can_cast(self, spell):
         if self.mana > get_mana_spell(spell):
             return True
         else:
             return False
 
-    def take_damage(self, damage_points):
-        return self.health - damage_points
+    def take_damage(self, dmg):
+        if float(self.health) - abs(dmg) <= 0:
+            self.alive = False
+            return False
+        else:
+            self.health = float(self.health) - dmg
+            return True
 
     def take_healing(self, healing_points):
         if not self.is_alive:
@@ -67,6 +72,7 @@ class Hero:
         if get_a_mana_potion(mana):
             if self.mana + mana > self.max_mana:
                 self.mana = self.max_mana
+                return True
         if self.mana < 0:
             return False
 
@@ -84,4 +90,3 @@ class Hero:
             if by is 'spell':
                 self.attack = self.spell
                 return self.attack
-
