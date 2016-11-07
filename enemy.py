@@ -1,3 +1,6 @@
+from weapons_spells import *
+
+
 class Enemy:
 
     def __init__(self, health=100, mana=100, damage=20):
@@ -46,7 +49,7 @@ class Enemy:
             return False
 
     def can_cast(self, spell):
-        return spell == self.spell
+        return spell == spell
 
     def take_damage(self, dmg):
         if float(self.health) - abs(dmg) <= 0:
