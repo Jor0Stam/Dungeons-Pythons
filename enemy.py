@@ -49,7 +49,7 @@ class Enemy:
             return False
 
     def can_cast(self, spell):
-        return spell == spell
+        self.spell = spell
 
     def take_damage(self, dmg):
         if float(self.health) - abs(dmg) <= 0:
@@ -67,7 +67,11 @@ class Enemy:
 
     def attack(self):
         if self.has_spell():
-            return self.spell.get_damage()
+            if self.mana - self.spell.get_mana_spell() < 0:
+                return self.weapon.get_damage()
+            else:
+                self.mana -= self.spell.get_mana_spell()
+                return self.spell.get_damage()
         elif self.has_weapon():
             return self.weapon.get_damage()
         else:

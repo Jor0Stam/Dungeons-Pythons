@@ -41,6 +41,16 @@ class Test_enemy(unittest.TestCase):
     def test_weapon_attack(self):
         self.sauron.equip(Weapon("Axe", 15))
         self.assertEqual(self.sauron.attack(), Weapon("Axe", 15).get_damage())
+        self.loki.equip(Weapon("Staff", 20))
+        self.assertEqual(self.loki.attack(), Weapon("Staff", 20).get_damage())
+
+    def test_spell_cast(self):
+        self.sauron.can_cast(Spell("Expeliarmus!", 15, 20, 2))
+        self.sauron.equip(Weapon("TrippleIntegral", 9999))
+        self.assertEqual(self.sauron.attack(), Spell("Expeliarmus!", 15, 20, 2).get_damage())
+        self.sauron.attack()
+        self.sauron.attack()
+        self.assertEqual(self.sauron.attack(), Weapon("TrippleIntegral", 9999).get_damage())
 
 
 if __name__ == "__main__":
