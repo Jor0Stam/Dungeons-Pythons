@@ -1,5 +1,6 @@
 import unittest
 from enemy import Enemy
+from weapons_spells import *
 
 
 class Test_enemy(unittest.TestCase):
@@ -36,6 +37,10 @@ class Test_enemy(unittest.TestCase):
 
     def test_attack(self):
         self.assertEqual(self.sauron.attack(), self.sauron.damage)
+
+    def test_weapon_attack(self):
+        self.sauron.equip(Weapon("Axe", 15))
+        self.assertEqual(self.sauron.attack(), Weapon("Axe", 15).get_damage())
 
 
 if __name__ == "__main__":
