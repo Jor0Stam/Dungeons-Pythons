@@ -10,8 +10,14 @@ class Hero:
         self.mana_regeneration_rate = mana_regeneration_rate
         self.max_health = health
         self.max_mana = mana
+<<<<<<< HEAD
         self.weapon = 0
         self.spell = 0
+=======
+        self.weapon = None
+        self.spell = None
+        # self.attack = None
+>>>>>>> 0746405e6ce7786ee49eadf6697d25edf6a82914
         self.alive = True
 
     def __eq__(self, other):
@@ -45,7 +51,7 @@ class Hero:
             return False
 
     def can_cast(self, spell):
-        if self.mana > get_mana_spell(spell):
+        if self.mana > spell.get_mana_spell():
             return True
         else:
             return False
@@ -78,18 +84,25 @@ class Hero:
 
     def equip(self, weapon):
         self.weapon = weapon
+        return True
 
     def learn(self, spell):
         self.spell = spell
+        return True
 
     def attack(self, by):
-        if self.weapon or self.spell != 0:
-            if by is 'weapon':
-                self.attack = self.weapon
+        print("dww")
+        if self.weapon or self.spell is not None:
+            print("vlqzoh")
+            if by == 'weapon':
+                print("i tuka")
+                self.attack = self.weapon.damage
                 return self.attack
-            if by is 'spell':
-                self.attack = self.spell
+            if by == 'spell':
+                print("i tam")
+                self.attack = self.spell.damage
                 return self.attack
+<<<<<<< HEAD
         else:
             return 0
 
@@ -110,3 +123,17 @@ def main():
 
 if __name__ == "__main__":
     main()
+=======
+        return 0
+
+
+# def main():
+#     # super_gosho = Hero(name="Gosho", title="Ubiec", health=100, mana=100, mana_regeneration_rate=2)
+#     # captain_america = Hero(name="America", title="Captain", health=10, mana=10, mana_regeneration_rate=1)
+#     # spell = Spell("Fireball", 30, 5, 2)
+#     # captain_america.learn(spell)
+#     # print(captain_america.attack('spell'))
+
+# if __name__ == "__main__":
+#     main()
+>>>>>>> 0746405e6ce7786ee49eadf6697d25edf6a82914
