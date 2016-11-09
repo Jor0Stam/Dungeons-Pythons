@@ -12,7 +12,6 @@ class Hero:
         self.max_mana = mana
         self.weapon = 0
         self.spell = 0
-        self.attack = 0
         self.alive = True
 
     def __eq__(self, other):
@@ -20,6 +19,9 @@ class Hero:
 
     def __hash__(self):
         return hash(self.hash())
+
+    def __str__(self):
+        return "{} the {}".format(self.name, self.title)
 
     def known_as(self):
         return '{} the {}'.format(self.name, self.title)
@@ -34,13 +36,13 @@ class Hero:
         if self.is_alive():
             return self.health
         else:
-            return "Your hero is dead"
+            return False
 
     def get_mana(self):
         if self.is_alive():
             return self.mana
         else:
-            return "Your hero is dead"
+            return False
 
     def can_cast(self, spell):
         if self.mana > get_mana_spell(spell):
@@ -66,15 +68,13 @@ class Hero:
         return True
 
     def take_mana(self, mana):
-        if make_a_move():
-            if self.mana + self.mana_regeneration_rate > self.max_mana:
-                self.mana = self.max_mana
-        if get_a_mana_potion(mana):
-            if self.mana + mana > self.max_mana:
-                self.mana = self.max_mana
-                return True
-        if self.mana < 0:
+        if not self.is_alive():
             return False
+        if self.mana + mana > self.max_mana:
+            self.mana = self.max_mana
+        else:
+            self.mana += mana
+        return True
 
     def equip(self, weapon):
         self.weapon = weapon
@@ -90,3 +90,23 @@ class Hero:
             if by is 'spell':
                 self.attack = self.spell
                 return self.attack
+        else:
+            return 0
+
+    def receive_treasure(self, treasure):
+        if treasure[1] == "mp":
+            self.take_mana(treasure[0])
+        if treasure[1] == "hp":
+            self.take_healing(treasure[0])
+        if isinstance(treasure[1], Weapon):
+            self.equip(treasure[0])
+        if isinstance(treasure[1], Spell):
+            self.learn(treasure[0])
+
+
+def main():
+    pass
+
+
+if __name__ == "__main__":
+    main()
