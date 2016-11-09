@@ -10,14 +10,8 @@ class Hero:
         self.mana_regeneration_rate = mana_regeneration_rate
         self.max_health = health
         self.max_mana = mana
-<<<<<<< HEAD
-        self.weapon = 0
-        self.spell = 0
-=======
         self.weapon = None
         self.spell = None
-        # self.attack = None
->>>>>>> 0746405e6ce7786ee49eadf6697d25edf6a82914
         self.alive = True
 
     def __eq__(self, other):
