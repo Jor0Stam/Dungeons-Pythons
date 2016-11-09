@@ -166,7 +166,6 @@ def main():
     d.move_hero("left")
     print(d.__str__())
     d.move_hero("down")
-    d.move_hero("right")
     print(d.__str__())
 
 

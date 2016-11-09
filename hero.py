@@ -91,18 +91,11 @@ class Hero:
         return True
 
     def attack(self, by):
-        print("dww")
         if self.weapon or self.spell is not None:
-            print("vlqzoh")
             if by == 'weapon':
-                print("i tuka")
-                self.attack = self.weapon.damage
-                return self.attack
+                return self.weapon.damage
             if by == 'spell':
-                print("i tam")
-                self.attack = self.spell.damage
-                return self.attack
-<<<<<<< HEAD
+                return self.spell.damage
         else:
             return 0
 
@@ -123,17 +116,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-=======
-        return 0
-
-
-# def main():
-#     # super_gosho = Hero(name="Gosho", title="Ubiec", health=100, mana=100, mana_regeneration_rate=2)
-#     # captain_america = Hero(name="America", title="Captain", health=10, mana=10, mana_regeneration_rate=1)
-#     # spell = Spell("Fireball", 30, 5, 2)
-#     # captain_america.learn(spell)
-#     # print(captain_america.attack('spell'))
-
-# if __name__ == "__main__":
-#     main()
->>>>>>> 0746405e6ce7786ee49eadf6697d25edf6a82914
