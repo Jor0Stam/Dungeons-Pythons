@@ -20,3 +20,11 @@ class Spell(Weapon):
 
     def get_mana_spell(self):
         return self.mana_cost
+
+
+def main():
+    pass
+
+
+if __name__ == "__main__":
+        main()

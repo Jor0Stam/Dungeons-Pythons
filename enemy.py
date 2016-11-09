@@ -79,3 +79,11 @@ class Enemy:
 
     def equip(self, weapon):
         self.weapon = weapon
+
+
+def main():
+    pass
+
+
+if __name__ == "__main__":
+        main()
