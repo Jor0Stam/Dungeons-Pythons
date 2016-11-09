@@ -1,5 +1,6 @@
 import unittest
 from hero import Hero
+from weapons_spells import *
 
 
 class Hero_test(unittest.TestCase):
@@ -31,6 +32,24 @@ class Hero_test(unittest.TestCase):
         self.assertTrue(self.captain_america.take_healing(1))
         self.assertEqual(self.super_gosho.get_health(), 60)
         self.assertEqual(self.captain_america.get_health(), 6)
+
+    def test_cast(self):
+        spell = Spell("Fireball", 30, 5, 2)
+        self.assertTrue(self.captain_america.can_cast(spell))
+
+    def test_is_equp(self):
+        weapon = Weapon("Old pen", 1)
+        self.assertTrue(self.captain_america.equip(weapon))
+
+    def test_is_learned(self):
+        spell = Spell("Fireball", 30, 5, 2)
+        self.assertTrue(self.captain_america.learn(spell))
+
+    # def test_attack(self):
+    #     spell = Spell("Fireball", 30, 5, 2)
+    #     self.captain_america.learn(spell)
+    #     print(self.captain_america.attack("spell"))
+    #     self.assertEqual(self.captain_america.attack("spell"), 30)
 
 
 if __name__ == "__main__":
