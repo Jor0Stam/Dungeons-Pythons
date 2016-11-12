@@ -4,8 +4,12 @@ from dungeon import *
 
 
 def main():
-    d = Dungeon()
     jonkata = Hero("Jonkata", "Goyemiq", 15, 20, 3)
+    d = Dungeon()
+    d.spawn(jonkata)
+    d.move_hero("down")
+    d.move_hero("down")
+    print(d)
     # print(jonkata.attack("spell"))
 
 

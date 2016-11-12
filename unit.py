@@ -41,7 +41,7 @@ class Unit:
     def can_cast(self, spell):
         return self.spell
 
-    def take_damage(self, dmg):
+    def take_damage(self, dmg=0):
         if float(self.health) - abs(dmg) <= 0:
             self.alive = False
         else:
@@ -101,7 +101,7 @@ class Hero(Unit):
             return 0
 
 
-class ClassName(Unit):
+class Enemy(Unit):
 
     def __init__(self, health, mana, damage):
             super().__init__(health, mana)
@@ -118,6 +118,9 @@ class ClassName(Unit):
             return self.weapon.get_damage()
         else:
             return self.damage
+
+    def get_damage(self):
+        return self.damage
 
 
 def main():
