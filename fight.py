@@ -13,11 +13,13 @@ class Fight:
         while self.hero.is_alive() and self.enemy.is_alive():
             self.hero_move()
             self.enemy_move()
+            print(self.hero.is_alive())
+            print(self.enemy.is_alive())
         BATTLE_END.format(self.who_won())
 
     def begin_fight(self):
-        print(INIT_FIGHT.format(h=self.hero, hp=self.hero.get_health(), \
-            mp=self.hero.get_mana(), eh=self.enemy.get_health(), \
+        print(INIT_FIGHT.format(h=self.hero, hp=self.hero.get_health(),
+            mp=self.hero.get_mana(), eh=self.enemy.get_health(),
             em=self.enemy.get_mana(), ed=self.enemy.get_damage()))
 
     def who_won(self):
@@ -27,9 +29,13 @@ class Fight:
 
     def hero_move(self):
         self.enemy.take_damage(self.hero.attack())
+        print("Hero attack:")
+        print(self.hero.attack())
 
     def enemy_move(self):
         self.hero.take_damage(self.enemy.attack())
+        print("Enemy attack:")
+        print(self.enemy.attack())
 
 
 def main():

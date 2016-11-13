@@ -98,7 +98,6 @@ class Dungeon:
             and self.h_pos[1] + direct[1] <= self.max_coords[1]
 
     def move_hero_to_hl(self):
-        print(self.is_enemy())
         if self.is_enemy():
             Fight(self.hero, self.enemy)
         self.dung[self.h_pos[1] + self.h_pos[0] *
@@ -117,7 +116,6 @@ class Dungeon:
             print("Invalid MOVE !")
 
     def is_enemy(self):
-        print(type(self.dung[self.h_pos[1] + self.h_pos[0]*self.max_coords[1]]))
         return self.dung[self.h_pos[1] + self.h_pos[0]*self.max_coords[1]].get_content() == "E"
 
     #coords as dict - content: list of coords?

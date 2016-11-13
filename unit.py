@@ -38,11 +38,14 @@ class Unit:
             return True
         return False
 
-    def can_cast(self, spell):
+    def can_cast(self):
         return self.spell
 
     def take_damage(self, dmg=0):
+        if dmg is None:
+            dmg = 0
         if float(self.health) - abs(dmg) <= 0:
+            self.health = 0
             self.alive = False
         else:
             self.health = float(self.health) - dmg
@@ -83,6 +86,8 @@ class Hero(Unit):
             self.attack_by(by)
         if self.have_weapon_spell():
             return self.attack_by("spell")
+        else:
+            return 0
 
     def have_weapon_spell(self):
         return self.weapon and self.spell
