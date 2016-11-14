@@ -87,7 +87,8 @@ class Dungeon:
     def is_valid_move(self, direct):
         new_row = self.h_pos[0] + direct[0]
         new_col = self.h_pos[1] + direct[1]
-        if self.dung[new_col + new_row * (self.max_coords[1])].get_content() is "#":
+        if self.dung[new_col + new_row *
+                     (self.max_coords[1])].get_content() is "#":
             return False
         return True
 
@@ -101,24 +102,29 @@ class Dungeon:
         if self.is_enemy():
             Fight(self.hero, self.enemy)
         self.dung[self.h_pos[1] + self.h_pos[0] *
-                 (self.max_coords[1])] = Point_on_map("H", self.h_pos)
+                  (self.max_coords[1])] = Point_on_map("H", self.h_pos)
 
     def clear_old_pos(self, pos):
         self.dung[pos[1] + pos[0] *
-                 (self.max_coords[1])] = Point_on_map(".", pos)
+                  (self.max_coords[1])] = Point_on_map(".", pos)
 
     def move_hero(self, direction):
         temp = self.h_pos
         if self.set_hero_location(direction):
             self.move_hero_to_hl()
             self.clear_old_pos(temp)
+            self.hero.move_mana()
         else:
             print("Invalid MOVE !")
 
     def is_enemy(self):
-        return self.dung[self.h_pos[1] + self.h_pos[0]*self.max_coords[1]].get_content() == "E"
+        return self.dung[self.h_pos[1] +
+                         self.h_pos[0] * self.max_coords[1]].get_content() == "E"
 
-    #coords as dict - content: list of coords?
+    def game_over(self):
+        print(GAME_OVER.format(hero=self.hero.__str__()))
+        if input("Play again?") in ["y", "Y", "Yes"]:
+            return self.begin_game()
 
 
 def main():

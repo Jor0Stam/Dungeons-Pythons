@@ -7,6 +7,7 @@ def main():
     jonkata = Hero("Jonkata", "Goyemiq", 15, 20, 3)
     d = Dungeon()
     d.spawn(jonkata)
+    jonkata.learn(Spell())
     d.move_hero("down")
     d.move_hero("down")
     print(d)

@@ -1,3 +1,6 @@
+from weapons_spells import *
+
+
 class Unit:
 
     def __init__(self, health, mana):
@@ -5,7 +8,7 @@ class Unit:
         self.max_mp = self.mana = mana
         self.status = True
         self.weapon = None
-        self.spell = None
+        self.spell = Spell(None, 0, 0, 0)
 
     def __eq__(self, other):
         return self.health == other.health and self.mana == self.mana
@@ -33,23 +36,31 @@ class Unit:
     def take_mana(self, conjur):
         if self.is_alive():
             self.mana += conjur
-            if self.mana > self.max_mana:
-                self.mana = self.max_mana
+            if self.mana > self.max_mp:
+                self.mana = self.max_mp
             return True
         return False
 
     def can_cast(self):
         return self.spell
 
+    def learn(self, spell):
+        self.spell = spell
+
     def take_damage(self, dmg=0):
         if dmg is None:
             dmg = 0
         if float(self.health) - abs(dmg) <= 0:
             self.health = 0
-            self.alive = False
+            self.go_dead()
         else:
+            if float(self.health) == float(dmg):
+                self.go_dead()
             self.health = float(self.health) - dmg
         return self.is_alive()
+
+    def go_dead(self):
+        self.status = False
 
     def equip(self, weapon):
         self.weapon = weapon
@@ -61,7 +72,7 @@ class Unit:
 class Hero(Unit):
 
     def __init__(self, name="HeMan", title="BiG",
-                            health=100, mana=100, mana_regen=3):
+                 health=100, mana=100, mana_regen=3):
         super().__init__(health, mana)
         self.name = name
         self.title = title
@@ -94,7 +105,7 @@ class Hero(Unit):
 
     def attack_by(self, by):
         ways_to_attack = {"weapon": self.check_is_there(by),
-                "spell": self.check_is_there(by)}
+                          "spell": self.check_is_there(by)}
         return ways_to_attack[by]
 
     def check_is_there(self, by):
@@ -105,17 +116,20 @@ class Hero(Unit):
         except Exception:
             return 0
 
+    def move_mana(self):
+        super(Hero, self).take_mana(self.mana_regen)
+
 
 class Enemy(Unit):
 
-    def __init__(self, health, mana, damage):
+    def __init__(self, health=20, mana=20, damage=20):
             super().__init__(health, mana)
             self.damage = damage
 
     def attack(self):
         if self.can_cast():
             if self.mana - self.spell.get_mana_spell() > 0:
-                return self.weapon.get_damage()
+                return self.check_for_weapon()
             else:
                 self.mana -= self.spell.get_mana_spell()
                 return self.spell.get_damage()
@@ -125,6 +139,11 @@ class Enemy(Unit):
             return self.damage
 
     def get_damage(self):
+        return self.damage
+
+    def check_for_weapon(self):
+        if self.weapon:
+            return self.weapon.get_damage()
         return self.damage
 
 
