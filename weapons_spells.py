@@ -1,8 +1,19 @@
+from metadata import *
+
+
 class Weapon:
 
     def __init__(self, name="Old pen", damage=1):
         self.name = name
         self.damage = damage
+
+    def __str__(self):
+        return WEAPON_INFO.format(name=self.name,
+                                  dmg=self.damage)
+
+    def __repr__(self):
+        return WEAPON_INFO.format(name=self.name,
+                                  dmg=self.damage)
 
     def get_damage(self):
         return self.damage
@@ -14,6 +25,18 @@ class Spell(Weapon):
         super().__init__(name, damage)
         self.mana_cost = mana_cost
         self.cast_range = cast_range
+
+    def __str__(self):
+        return SPELL_INFO.format(name=self.name,
+                                 dmg=self.damage,
+                                 mp=self.mana_cost,
+                                 cr=self.cast_range)
+
+    def __repr__(self):
+        return SPELL_INFO.format(name=self.name,
+                                 dmg=self.damage,
+                                 mp=self.mana_cost,
+                                 cr=self.cast_range)
 
     def get_damage(self):
         return self.damage

@@ -1,4 +1,5 @@
 from metadata import *
+from unit import *
 
 
 class Fight:
@@ -17,7 +18,7 @@ class Fight:
 
     def who_lost(self):
         if self.hero.is_alive():
-            "Enemy"
+            return "Enemy"
         return "Hero"
 
     def begin_fight(self):
@@ -27,18 +28,22 @@ class Fight:
                                 em=self.enemy.get_mana(),
                                 ed=self.enemy.get_damage()))
 
-    def who_won(self):
-        if self.hero.is_alive():
-            return "Enemy"
-        return self.hero.__str__()
-
     def hero_move(self):
+        attacked_by = ""
         self.enemy.take_damage(self.hero.attack())
-        print(HERO_ATTACK_SPELL.format(hero=self.hero.__str__(),
-                                       spell=self.hero.spell.name,
-                                       dmg=self.hero.attack(),
-                                       hp=self.enemy.get_health()))
-        self.enemy.take_damage(self.hero.attack())
+        attacked_by = Attack(self.hero).get_meaning()
+        if attacked_by == "Spell":
+            print(HERO_ATTACK_SPELL.format(hero=self.hero.__str__(),
+                                           spell=self.hero.spell.name,
+                                           dmg=self.hero.attack(),
+                                           hp=self.enemy.get_health()))
+        elif attacked_by == "Weapon":
+            print(HERO_ATTACK_SPELL.format(hero=self.hero.__str__(),
+                                           weapon=self.hero.weapon.name,
+                                           dmg=self.hero.attack(),
+                                           hp=self.enemy.get_health()))
+        else:
+            print(HERO_NO_ATTACK.format(hero=self.hero.__str__()))
 
     def enemy_move(self):
         self.hero.take_damage(self.enemy.attack())

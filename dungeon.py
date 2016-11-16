@@ -1,6 +1,7 @@
 from sys import argv
 from fight import *
 from unit import *
+from treasure import ReceiveTreasure
 
 
 class Point_on_map:
@@ -27,6 +28,7 @@ class Dungeon:
         self.h_pos = self.get_spawn_pos()
         self.hero = None
         self.enemy = Enemy(50, 30, 15)
+        self.hero_died = False
 
     def __str__(self):
         result = ""
@@ -63,7 +65,9 @@ class Dungeon:
         return self.dung
 
     def spawn(self, hero):
+        self.dung = self.format_map()
         self.hero = hero
+        self.hero_status = True
         self.h_pos = self.get_spawn_pos()
         self.move_hero_to_hl()
 
@@ -101,6 +105,8 @@ class Dungeon:
     def move_hero_to_hl(self):
         if self.is_enemy():
             Fight(self.hero, self.enemy)
+        if self.is_treasure():
+            ReceiveTreasure(self.hero).assign_treasure_hero()
         self.dung[self.h_pos[1] + self.h_pos[0] *
                   (self.max_coords[1])] = Point_on_map("H", self.h_pos)
 
@@ -117,14 +123,15 @@ class Dungeon:
         else:
             print("Invalid MOVE !")
 
+    def is_treasure(self):
+        return self.dung[self.h_pos[1] +
+                         self.h_pos[0] *
+                         self.max_coords[1]].get_content() == "T"
+
     def is_enemy(self):
         return self.dung[self.h_pos[1] +
-                         self.h_pos[0] * self.max_coords[1]].get_content() == "E"
-
-    def game_over(self):
-        print(GAME_OVER.format(hero=self.hero.__str__()))
-        if input("Play again?") in ["y", "Y", "Yes"]:
-            return self.begin_game()
+                         self.h_pos[0] *
+                         self.max_coords[1]].get_content() == "E"
 
 
 def main():
