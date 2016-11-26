@@ -38,10 +38,10 @@ class Fight:
                                            dmg=self.hero.attack(),
                                            hp=self.enemy.get_health()))
         elif attacked_by == "Weapon":
-            print(HERO_ATTACK_SPELL.format(hero=self.hero.__str__(),
-                                           weapon=self.hero.weapon.name,
-                                           dmg=self.hero.attack(),
-                                           hp=self.enemy.get_health()))
+            print(HERO_ATTACK_WEAPON.format(hero=self.hero.__str__(),
+                                            weapon=self.hero.weapon.name,
+                                            dmg=self.hero.attack(),
+                                            hp=self.enemy.get_health()))
         else:
             print(HERO_NO_ATTACK.format(hero=self.hero.__str__()))
 

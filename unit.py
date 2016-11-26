@@ -4,8 +4,8 @@ from weapons_spells import *
 class Unit:
 
     def __init__(self, health, mana):
-        self.max_hp = self.health = health
-        self.max_mp = self.mana = mana
+        self.max_hp = self.health = int(health)
+        self.max_mp = self.mana = int(mana)
         self.status = True
         self.weapon = None
         self.spell = None
@@ -27,7 +27,7 @@ class Unit:
 
     def take_healing(self, heal):
         if self.is_alive():
-            self.health += heal
+            self.health += int(heal)
             if self.health > self.max_hp:
                 self.health = self.max_hp
             return True
@@ -75,10 +75,12 @@ class Unit:
 class Attack():
 
     def __init__(self, attacker, by=None):
+        self.by = self.check_for_by(by)
         self.meaning_of_attack = None
         self.attacker = attacker
+        self.weapons = {"Weapon": self.check_weapon(),
+                        "Spell": self.check_spell()}
         self.damage = self.estimate_attack()
-        self.by = self.check_for_by(by)
 
     def get_meaning(self):
         return self.meaning_of_attack
@@ -89,21 +91,17 @@ class Attack():
     def check_for_by(self, by):
         if not by:
             return None
-        weapons = {"Weapon": self.check_weapon(), "Spell": self.check_spell()}
-        self.set_damage(weapons[by])
+        self.set_damage(self.weapons[by])
 
     def estimate_attack(self):
         if (self.check_weapon(), self.check_spell()) == (0, 0):
             self.meaning_of_attack = "None"
             return 0
-        weapons = {"Weapon": self.check_weapon(), "Spell": self.check_spell()}
-        print(type(weapons["Weapon"]))
-        print(type(weapons["Spell"]))
-        if weapons["Weapon"] > weapons["Spell"]:
-            self.meaning_of_attack = "Spell"
-            return self.set_damage(attacker.weapon.get_damage())
-        self.meaning_of_attack = "Weapon"
-        return self.set_damage(attacker.spell.get_damage())
+        if self.weapons["Weapon"] > self.weapons["Spell"]:
+            self.meaning_of_attack = "Weapon"
+            return self.set_damage(self.attacker.weapon.get_damage())
+        self.meaning_of_attack = "Spell"
+        return self.set_damage(self.attacker.spell.get_damage())
 
     def check_spell(self):
         if self.attacker.has_spell():
@@ -126,7 +124,7 @@ class Hero(Unit):
         super().__init__(health, mana)
         self.name = name
         self.title = title
-        self.mana_regen = mana_regen
+        self.mana_regen = int(mana_regen)
 
     def __str__(self):
         return "{} the {}".format(self.name, self.title)
@@ -142,10 +140,27 @@ class Hero(Unit):
     def __hash__(self):
             return hash(self.hash())
 
-    def attack(self, by=0):
-        if by:
-            return Attack(self.hero, by).get_attack()
-        return Attack(self).get_attack()
+    def attack(self):
+        if self.can_cast():
+            if self.mana - self.spell.get_mana_spell() < 0:
+                return self.check_for_weapon()
+            else:
+                self.mana -= self.spell.get_mana_spell()
+                return self.spell.get_damage()
+        elif self.has_weapon():
+            return self.weapon.get_damage()
+        else:
+            return 0
+
+    def check_for_weapon(self):
+        if self.weapon:
+            return self.weapon.get_damage()
+        return 0
+
+    # def attack(self, by=0):
+    #     if by:
+    #         return Attack(self.hero, by).get_attack()
+    #     return Attack(self).get_attack()
 
     def check_is_there(self, by):
         to_check = {"spell": self.spell, self.weapon: self.weapon}
@@ -156,7 +171,7 @@ class Hero(Unit):
             return 0
 
     def move_mana(self):
-        super(Hero, self).take_mana(self.mana_regen)
+        self.take_mana(self.mana_regen)
 
     def receive_spell(self):
         name = input("Spell name: ")

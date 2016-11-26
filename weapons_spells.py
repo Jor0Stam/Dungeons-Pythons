@@ -5,7 +5,7 @@ class Weapon:
 
     def __init__(self, name="Old pen", damage=1):
         self.name = name
-        self.damage = damage
+        self.damage = int(damage)
 
     def __str__(self):
         return WEAPON_INFO.format(name=self.name,

@@ -1,34 +1,36 @@
-from sys import argv
 from fight import *
 from unit import *
 from treasure import ReceiveTreasure
+from metadata import *
+from format_levels import *
 
 
-class Point_on_map:
+# class Point_on_map:
 
-    def __init__(self, content, coords):
-        self.content = content
-        self.coords = coords
+#     def __init__(self, content, coords):
+#         self.content = content
+#         self.coords = coords
 
-    def __str__(self):
-        return "{}".format(self.content)
+#     def __str__(self):
+#         return "{}".format(self.content)
 
-    def get_content(self):
-        return self.content
+#     def get_content(self):
+#         return self.content
 
-    def get_coords(self):
-        return self.coords
+#     def get_coords(self):
+#         return self.coords
 
 
 class Dungeon:
 
-    def __init__(self):
-        self.max_coords = (0, 0)
-        self.dung = self.format_map()
+    def __init__(self, lvl):
+        self.max_coords = lvl.get_max_coords()
+        self.dung = lvl.content
         self.h_pos = self.get_spawn_pos()
         self.hero = None
         self.enemy = Enemy(50, 30, 15)
         self.hero_died = False
+        self.lvl_cleared = False
 
     def __str__(self):
         result = ""
@@ -48,24 +50,14 @@ class Dungeon:
 
         return result
 
-    def format_map(self):
-        formated = []
-        row = 0
-        for line in open(argv[1], "r").readlines():
-            col = 0
-            print("LINE{}: {}".format(row, line.replace("\n", "")))
-            for el in line.replace("\n", ""):
-                formated.append(Point_on_map(el, (row, col)))
-                col += 1
-            row += 1
-        self.max_coords = (row, col)
-        return formated
+    def format_map(self, lvl_map):
+        self.dung = lvl_map.content
 
     def get_map(self):
         return self.dung
 
     def spawn(self, hero):
-        self.dung = self.format_map()
+        # self.dung = self.format_map()
         self.hero = hero
         self.hero_status = True
         self.h_pos = self.get_spawn_pos()
@@ -103,12 +95,23 @@ class Dungeon:
             and self.h_pos[1] + direct[1] <= self.max_coords[1]
 
     def move_hero_to_hl(self):
-        if self.is_enemy():
+        if self.is_something("E"):
             Fight(self.hero, self.enemy)
-        if self.is_treasure():
+        if self.is_something("T"):
             ReceiveTreasure(self.hero).assign_treasure_hero()
+        if self.is_something("G"):
+            self.next_lvl()
         self.dung[self.h_pos[1] + self.h_pos[0] *
                   (self.max_coords[1])] = Point_on_map("H", self.h_pos)
+
+    def next_lvl(self):
+        self.lvl_cleared = True
+
+    def is_something(self, content):
+        # print(self.dung)
+        return self.dung[self.h_pos[1] +
+                         self.h_pos[0] *
+                         self.max_coords[1]].get_content() == content
 
     def clear_old_pos(self, pos):
         self.dung[pos[1] + pos[0] *
@@ -122,16 +125,6 @@ class Dungeon:
             self.hero.move_mana()
         else:
             print("Invalid MOVE !")
-
-    def is_treasure(self):
-        return self.dung[self.h_pos[1] +
-                         self.h_pos[0] *
-                         self.max_coords[1]].get_content() == "T"
-
-    def is_enemy(self):
-        return self.dung[self.h_pos[1] +
-                         self.h_pos[0] *
-                         self.max_coords[1]].get_content() == "E"
 
 
 def main():
