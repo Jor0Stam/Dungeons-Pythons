@@ -23,6 +23,22 @@ class Level:
         self.max_coords = (0, 0)
         self.content = self.format_map(raw_info)
 
+    def __str__(self):
+        result = ""
+        for row in range(self.max_coords[0]):
+            for col in range(self.max_coords[1]):
+                result += str(self.content[col + row * (self.max_coords[1])])
+            result += "\n"
+        return result
+
+    def __repr__(self):
+        result = ""
+        for row in range(self.max_coords[0]):
+            for col in range(self.max_coords[1]):
+                result += str(self.content[col + row * (self.max_coords[1])])
+            result += "\n"
+        return result
+
     def format_map(self, content):
         formated = []
         row = col = 0
@@ -79,7 +95,10 @@ class Levels:
 
 def main():
     L = Levels()
-    print(L.levels)
+    for el in L.levels:
+        print(el)
+    # print(L.levels)
+    # print(L.levels[0].content[0])
 
 
 if __name__ == "__main__":

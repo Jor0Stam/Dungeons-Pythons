@@ -57,7 +57,6 @@ class Dungeon:
         return self.dung
 
     def spawn(self, hero):
-        # self.dung = self.format_map()
         self.hero = hero
         self.hero_status = True
         self.h_pos = self.get_spawn_pos()

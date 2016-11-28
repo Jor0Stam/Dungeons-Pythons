@@ -24,8 +24,10 @@ class GamingExperiance:
         if self.dung.lvl_cleared:
             try:
                 self.dung.format_map(self.lvls.levels.pop())
+                print(self.dung)
                 self.dung.h_pos = self.dung.get_spawn_pos()
                 self.dung.spawn(self.dung.hero)
+                self.dung.lvl_cleared = False
                 print(NOT_LAST_LVL.format(hero=self.dung.hero))
             except IndexError:
                 self.game_on = False
@@ -46,6 +48,8 @@ class GamingExperiance:
     def game_over(self):
         print(GAME_OVER.format(hero=self.dung.hero.__str__()))
         if input("Play again?") in ["y", "Y", "Yes"]:
+            self.lvls = Levels()
+            self.dung = Dungeon(self.lvls.levels.pop())
             return self.begin_game()
         self.set_game_status(False)
 
